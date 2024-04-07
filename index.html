@@ -6,12 +6,25 @@
   <style></style>
 
   <!-- CSS Styles-->
-  <style></style>
+  <style>
+
+.tooltip {
+      position: absolute;
+      background-color: #fff;
+      padding: 10px;
+      border: 1px solid #046468;
+      border-radius: 5px;
+      pointer-events: none;
+      opacity: 0;
+    }
+
+
+  </style>
 
 <!--Headings-->
   <div>
    <h1>Assignment 4</h1>
-   <h2>"Singapore  Population on Chloropleth"</h2>
+   <h2>"Singapore  Population in 2023 on Choropleth"</h2>
     
   </div> 
 </head>
@@ -19,12 +32,19 @@
 <svg></svg>
 <script src="https://d3js.org/d3.v7.min.js"></script>
 
-<script>
+<!--Div ID's-->
+<div id="tooltip" class="tooltip"></div>
 
+<script>
+//dimensions
 let width = 1000, height = 600;
 
+//create the viewbox
 let svg = d3.select("svg")
     .attr("viewBox", "0 0 " + width + " " + height)
+
+// Define the tooltip variable to select the tooltip element
+  let tooltip = d3.select(".tooltip");
 
 // Load external data and boot
 Promise.all([d3.json("https://raw.githubusercontent.com/Chi-Loong/HASS02.526/master/assignments/sgmap.json"), 
@@ -41,6 +61,21 @@ mapData.forEach(d => {
 
 console.log(mapData);
 
+ // Define brown color range
+ let colorScale = d3
+  .scaleThreshold()
+  .domain([1, 20000, 40000, 60000, 80000, 100000, 120000])
+  .range([
+    "#d9b38c", // Light brown
+    "#b68a5c",
+    "#8f6141",
+    "#74472e",
+    "#5a3320",
+    "#421f14",
+    "#2c120b", // Dark brown
+        ]);
+
+
 // Map and projection
 let projection = d3.geoMercator()
     .center([103.851959, 1.290270])
@@ -48,6 +83,7 @@ let projection = d3.geoMercator()
 
 let geopath = d3.geoPath().projection(projection);
 
+//SVG Methodchain: Adding population to proejection
 svg.append("g")
     .attr("id", "districts")
     .selectAll("path")
@@ -55,9 +91,45 @@ svg.append("g")
     .enter()
     .append("path")
     .attr("d", geopath)
-    .attr("stroke", "black")
-    .attr("fill", "grey");
-})
+    .attr("stroke", "white")
+    .attr("fill", "grey")
+    .attr("fill", (d) => colorScale(d.popdata))
+    .classed("animated", true)
+
+    // Event handlers: update tooltip relative to mouse pointer
+    .on("mouseover", (event, d) => {
+        const centroid = geopath.centroid(d);
+        const [x, y] = centroid;
+        const scale = 1.2; // Adjust the scale factor as needed
+
+    d3.select(event.currentTarget)
+      .classed("highlighted", true)
+      .attr(
+        "transform",
+        `translate(${x * (1 - scale)}, ${
+         y * (1- scale)
+          }) scale(${scale}, ${scale})`
+            )
+      .raise(); // Raise section above projection
+
+      //d3.select(".tooltip")
+      tooltip.style("opacity", 1)
+        .html(`<strong>${d.properties.Name}</strong><br>Population: ${d.popdata.toLocaleString()}`)
+        .style("display", "block")
+        .style("left", event.pageX + 60 + "px")
+        .style("top", event.pageY - 60 + "px");
+        })
+        .on("mouseout", (event, d) => {
+            d3.select(event.currentTarget)
+              .classed("highlighted", false)
+              .attr("transform", "translate(0, 0) scale(1, 1)");
+
+            d3.select(".tooltip").style("display", "none");
+        });
+
+    
+
+})// end data
 
 </script>
 
