@@ -97,21 +97,19 @@ svg.append("g")
     .classed("animated", true)
 
     // Event handlers: update tooltip relative to mouse pointer
+    //turning on the mouuse-over fucntion
     .on("mouseover", (event, d) => {
         const centroid = geopath.centroid(d);
         const [x, y] = centroid;
-        const scale = 1.2; // Adjust the scale factor as needed
+          
 
     d3.select(event.currentTarget)
       .classed("highlighted", true)
-      .attr(
-        "transform",
-        `translate(${x * (1 - scale)}, ${
-         y * (1- scale)
-          }) scale(${scale}, ${scale})`
-            )
+      .attr("transform",`translate(${x * (1 - scale)}, ${y * (1- scale)}) scale(${scale}, ${scale})`)
       .raise(); // Raise section above projection
 
+
+      //making the mouse-over funciton link to the tooltip
       //d3.select(".tooltip")
       tooltip.style("opacity", 1)
         .html(`<strong>${d.properties.Name}</strong><br>Population: ${d.popdata.toLocaleString()}`)
