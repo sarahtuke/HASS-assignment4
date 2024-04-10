@@ -66,6 +66,7 @@
 <div id="tooltip" class="tooltip"></div>
 
 <script>
+
 //dimensions
 let width = 1000, height = 600;
 
@@ -107,11 +108,24 @@ console.log(mapData);
 
 
 // Map and projection
+
 let projection = d3.geoMercator()
+
     .center([103.851959, 1.290270])
     .fitExtent([[20, 20], [980, 580]], data[0]);
 
 let geopath = d3.geoPath().projection(projection);
+
+
+/*
+let projection = d3.geoAitoff()
+    .rotate([103.851959, -1.290270, 0]) // This rotation centers the map; adjust as needed
+    //.scale(150) // Adjust scale as needed
+    //.translate([width / 2, height / 2]); // Center the map in the middle of your SVG container
+
+
+let geopath = d3.geoPath().projection(projection);
+*/
 
 //SVG Methodchain: Adding population to proejection
 svg.append("g")
