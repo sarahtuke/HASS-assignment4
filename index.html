@@ -18,6 +18,28 @@
       opacity: 0;
     }
 
+    body {
+        font-family: "Roboto", helvetica, arial, sans-serif;
+        display: block;
+        margin: auto;
+        width: 100%;
+        text-align: center;
+    }
+    h1 {
+       margin: 0px;
+       font-size: 30px;
+       font-weight: 400;
+       font-style:normal;
+       text-transform:uppercase;
+    }
+    h2 {
+       margin: 2px;
+       font-size: 20px;
+       font-weight: 400;
+       font-style:normal;
+       text-transform:uppercase;
+    }
+
 
   </style>
 
@@ -27,6 +49,9 @@
    <h2>"Singapore  Population in 2023 on Choropleth"</h2>
     
   </div> 
+
+  <body style="background-color: #3c4352;">
+    
 </head>
 <body>
 <svg></svg>
@@ -38,6 +63,8 @@
 <script>
 //dimensions
 let width = 1000, height = 600;
+
+
 
 //create the viewbox
 let svg = d3.select("svg")
