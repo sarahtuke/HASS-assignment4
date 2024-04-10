@@ -2,6 +2,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+  <title>IDV: Assignment 04</title>
+
   <meta charset="UTF-8">
   <style></style>
 
@@ -30,6 +33,7 @@
        font-size: 30px;
        font-weight: 400;
        font-style:normal;
+       color: #fff;
        text-transform:uppercase;
     }
     h2 {
@@ -37,6 +41,7 @@
        font-size: 20px;
        font-weight: 400;
        font-style:normal;
+       color: #fff;
        text-transform:uppercase;
     }
 
@@ -93,14 +98,12 @@ console.log(mapData);
   .scaleThreshold()
   .domain([1, 20000, 40000, 60000, 80000, 100000, 120000])
   .range([
-    "#d9b38c", // Light brown
-    "#b68a5c",
-    "#8f6141",
-    "#74472e",
-    "#5a3320",
-    "#421f14",
-    "#2c120b", // Dark brown
-        ]);
+
+  "#b5d4e9","#93c3df","#6daed5",
+  "#4b97c9","#2f7ebc","#1864aa",
+  "#0a4a90","#08306b"
+
+    ]);
 
 
 // Map and projection
@@ -132,7 +135,7 @@ svg.append("g")
 
     d3.select(event.currentTarget)
       .classed("highlighted", true)
-      .attr("transform",`translate(${x * (1 - scale)}, ${y * (1- scale)}) scale(${scale}, ${scale})`)
+      //.attr("transform",`translate(${x * (1 - scale)}, ${y * (1- scale)}) scale(${scale}, ${scale})`)
       .raise(); // Raise section above projection
 
 
